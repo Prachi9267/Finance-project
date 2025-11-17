@@ -1,0 +1,7 @@
+streamlit
+pandas
+numpy
+tabula-py
+camelot-py
+matplotlib
+PyPDF2
