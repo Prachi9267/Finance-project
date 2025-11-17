@@ -1,7 +1,7 @@
 streamlit
 pandas
 numpy
-tabula-py
+pdfplumber
 camelot-py
 matplotlib
 PyPDF2
