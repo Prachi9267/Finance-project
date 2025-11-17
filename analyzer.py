@@ -2,12 +2,7 @@
 # coding: utf-8
 
 # In[2]:
-
-
-
-
-# In[3]:
-import pdfplumber
+import tabula
 import pandas as pd
 import re
 
@@ -22,49 +17,25 @@ def clean_amount(x):
 
 def analyze_bank_statement(uploaded_pdf):
     try:
-        rows = []
+        # Read PDF using Tabula
+        dfs = tabula.read_pdf(uploaded_pdf, pages='all', multiple_tables=True)
 
-        # === Extract tables from PDF ===
-        with pdfplumber.open(uploaded_pdf) as pdf:
-            for page in pdf.pages:
-                tables = page.extract_tables()
-                for table in tables:
-                    for row in table:
+        if not dfs or len(dfs) == 0:
+            return {"error": "No tables found in PDF"}
 
-                        if not row or len(row) < 4:
-                            continue
+        # Combine all tables
+        df = pd.concat(dfs, ignore_index=True)
 
-                        date = row[0]
-                        narration = row[1]
-                        withdrawal_amt = row[2]
-                        deposit_amt = row[3]
+        # Fix column names
+        df.columns = ["date", "narration", "withdrawal_amt", "deposit_amt"][:len(df.columns)]
 
-                        # Validate date
-                        if not re.match(r"\d{1,2}[-/]\d{1,2}[-/]\d{2,4}", str(date)):
-                            continue
+        df["withdrawal_amt"] = df["withdrawal_amt"].apply(clean_amount)
+        df["deposit_amt"] = df["deposit_amt"].apply(clean_amount)
 
-                        rows.append([
-                            date,
-                            narration,
-                            clean_amount(withdrawal_amt),
-                            clean_amount(deposit_amt),
-                        ])
-
-        if len(rows) == 0:
-            return {
-                "error": "No valid transaction rows found in the PDF. Try another statement."
-            }
-
-        df = pd.DataFrame(rows, columns=["date", "narration", "withdrawal_amt", "deposit_amt"])
-
-        # ================================================================
-        # 🔥🔥  YOUR EXACT CATEGORIZATION CODE STARTS HERE  🔥🔥
-        # ================================================================
-
-        # === Clean Narration Text ===
+        # ======== CLEAN NARRATION TEXT =========
         def clean_narration(text):
             text = str(text).upper().strip()
-            replacements = ['DMRC', 'ZOMATO', 'SWIGGY', 'AMAZON', 'FLIPKART', 'PHONEPE', 'PAYTM', 'GPAY']
+            replacements = ['DMRC','ZOMATO','SWIGGY','AMAZON','FLIPKART','PHONEPE','PAYTM','GPAY']
             for r in replacements:
                 text = re.sub(rf'{r}.*', r, text)
             text = re.sub(r'[-_.,:;0-9]+$', '', text).strip()
@@ -72,7 +43,7 @@ def analyze_bank_statement(uploaded_pdf):
 
         df['Clean_Narration'] = df['narration'].apply(clean_narration)
 
-        # === Categorize Transactions ===
+        # ======== CATEGORY MAPPING =========
         def categorize_transaction_base(narration):
             narration = str(narration)
 
@@ -92,7 +63,7 @@ def analyze_bank_statement(uploaded_pdf):
 
         df['Category'] = df['Clean_Narration'].apply(categorize_transaction_base)
 
-        # === Dynamic category naming ===
+        # ===== Dynamic category naming ======
         def create_dynamic_category(narration):
             narration = str(narration).title()
             if len(narration) > 30:
@@ -108,26 +79,19 @@ def analyze_bank_statement(uploaded_pdf):
 
         df['Category'] = df['Category'].replace('Others 💼', 'Unclassified Payment 💼')
 
-        # ================================================================
-        # 🔥🔥  YOUR EXACT CATEGORIZATION CODE ENDS HERE  🔥🔥
-        # ================================================================
-
-        # Summary table
-        df['amount'] = df['withdrawal_amt'].fillna(0) * -1 + df['deposit_amt'].fillna(0)
-        spending_df = df[df['amount'] < 0].groupby("Category")["amount"].sum().abs()
+        # Summary
+        df["amount"] = df["withdrawal_amt"].fillna(0) * -1 + df["deposit_amt"].fillna(0)
+        spending_df = df.groupby("Category")["amount"].sum()
 
         return {
             "df": df,
             "spending_df": spending_df,
-            "total_credit": df['deposit_amt'].sum(),
-            "total_debit": df['withdrawal_amt'].sum()
+            "total_credit": df["deposit_amt"].sum(),
+            "total_debit": df["withdrawal_amt"].sum()
         }
 
     except Exception as e:
-        return {"error": str(e)}
-
-
-# In[ ]:
+        return {"error": f"PDF extraction failed: {e}"}
 
 
 

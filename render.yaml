@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: bank-statement-analyzer
+    env: python
+    buildCommand: |
+      sudo apt-get update
+      sudo apt-get install -y default-jre
+      pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
