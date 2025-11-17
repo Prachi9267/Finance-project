@@ -3,10 +3,6 @@
 
 # In[1]:
 
-
-# In[2]:
-
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,10 +13,7 @@ st.set_page_config(page_title="Bank Statement Analyzer", layout="wide")
 st.title("💰 Bank Statement Analyzer")
 st.write("Upload your bank statement PDF to extract transactions, categorize spending, and view insights.")
 
-uploaded_file = st.file_uploader(
-    "📄 Upload Bank Statement (PDF)",
-    type=["pdf"]
-)
+uploaded_file = st.file_uploader("📄 Upload Bank Statement (PDF)", type=["pdf"])
 
 if uploaded_file:
     st.info("Processing the PDF… This may take a few seconds.")
@@ -40,9 +33,13 @@ if uploaded_file:
         col1.metric("💰 Total Credited", f"₹ {result['total_credit']:,.2f}")
         col2.metric("💸 Total Debited", f"₹ {result['total_debit']:,.2f}")
 
-        # === Category Chart ===
+        # === Show Raw Extracted Data ===
+        st.subheader("📄 Extracted Transactions")
+        st.dataframe(df, use_container_width=True)
+
+        # === Category Chart + Table ===
         if not spending_df.empty:
-            # === Category-wise Spending Table ===
+
             st.subheader("📊 Category-wise Spending Table")
 
             category_table = spending_df.reset_index()
@@ -50,9 +47,7 @@ if uploaded_file:
 
             st.dataframe(category_table, use_container_width=True)
 
-            
             st.subheader("💸 Spending by Category")
-
             st.bar_chart(spending_df)
 
             st.subheader("🥇 Highest Spending Category")
@@ -62,8 +57,6 @@ if uploaded_file:
             st.write(f"### {highest_cat}")
             st.write(f"**₹ {highest_amt:,.2f}** spent here")
 
-
-# In[ ]:
 
 
 

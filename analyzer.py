@@ -7,7 +7,6 @@
 
 
 # In[3]:
-
 import pdfplumber
 import pandas as pd
 import re
@@ -31,6 +30,7 @@ def analyze_bank_statement(uploaded_pdf):
                 tables = page.extract_tables()
                 for table in tables:
                     for row in table:
+
                         if not row or len(row) < 4:
                             continue
 
@@ -51,7 +51,9 @@ def analyze_bank_statement(uploaded_pdf):
                         ])
 
         if len(rows) == 0:
-            return None, None
+            return {
+                "error": "No valid transaction rows found in the PDF. Try another statement."
+            }
 
         df = pd.DataFrame(rows, columns=["date", "narration", "withdrawal_amt", "deposit_amt"])
 
@@ -112,13 +114,18 @@ def analyze_bank_statement(uploaded_pdf):
 
         # Summary table
         df['amount'] = df['withdrawal_amt'].fillna(0) * -1 + df['deposit_amt'].fillna(0)
-        category_summary = df.groupby("Category")["amount"].sum().reset_index()
+        spending_df = df[df['amount'] < 0].groupby("Category")["amount"].sum().abs()
 
-        return df, category_summary
+        return {
+            "df": df,
+            "spending_df": spending_df,
+            "total_credit": df['deposit_amt'].sum(),
+            "total_debit": df['withdrawal_amt'].sum()
+        }
 
     except Exception as e:
-        print("Error:", e)
-        return None, None
+        return {"error": str(e)}
+
 
 # In[ ]:
 
