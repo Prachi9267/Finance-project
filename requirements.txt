@@ -1,6 +1,8 @@
 streamlit
 pandas
 numpy
-tabula-py
+streamlit
+camelot-py
+opencv-python
+ghostscript
 matplotlib
-PyPDF2
