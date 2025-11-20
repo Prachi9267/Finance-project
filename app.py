@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,6 +19,7 @@ uploaded_file = st.file_uploader(
 if uploaded_file:
     st.info("Processing the PDF… This may take a few seconds.")
 
+    # Pass file path (Camelot needs a path or bytes)
     result = analyze_bank_statement(uploaded_file)
 
     if "error" in result:
@@ -54,7 +54,6 @@ if uploaded_file:
 
             st.write(f"### {highest_cat}")
             st.write(f"**₹ {highest_amt:,.2f}** spent here")
-
 
 
 
