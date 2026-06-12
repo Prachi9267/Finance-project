@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Bank Statement Analyzer</h1>
+
+<form action="/analyze" method="POST" enctype="multipart/form-data">
+
+    <label>Upload Bank Statement:</label>
+    <input type="file" name="pdf" required>
+
+    <br><br>
+
+    <label>PDF Password (if protected):</label>
+    <input
+        type="password"
+        name="pdf_password"
+        placeholder="Leave empty if not protected"
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Analyze Statement
+    </button>
+
+</form>
+</body>
+</html>

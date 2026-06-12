@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Results</h1>
+
+<p>Total Credit: ₹ {{ results.total_credit }}</p>
+
+<p>Total Debit: ₹ {{ results.total_debit }}</p>
+
+<p>Highest Category:
+{{ results.highest_category }}</p>
+
+<p>Highest Amount:
+₹ {{ results.highest_amount }}</p>
+
+<img src="{{ url_for('static', filename=results.chart_file) }}">
+
+</body>
+</html>
