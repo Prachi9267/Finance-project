@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f9fc;
+    color: #1f2a37;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 18px 30px;
+    border-bottom: 1px solid #E6E8F0;
+    background: white;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #FF8F63;
+}
+
+/* MAIN CONTAINER */
+.results-container {
+    padding: 40px 60px;
+}
+
+/* TITLE */
+.title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* CARDS GRID */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* CARD STYLE */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* CARD TEXT */
+.card h3 {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* COLORS ACCENTS */
+.credit p {
+    color: #16a34a;
+}
+
+.debit p {
+    color: #dc2626;
+}
+
+.category p {
+    color: #2563eb;
+}
+
+.amount p {
+    color: #f59e0b;
+}
+
+/* CHART SECTION */
+.chart-section {
+    margin-top: 40px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.chart-section h2 {
+    margin-bottom: 15px;
+}
+
+.chart-section img {
+    width: 100%;
+    max-width: 700px;
+}

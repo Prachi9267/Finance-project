@@ -1,20 +1,50 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <title>Results-FINSYY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css')}}" </head>
+
 <body>
 
-<h1>Results</h1>
+    <header class="navbar">
+        <span class="logo">FINSYY</span>
+    </header>
 
-<p>Total Credit: ₹ {{ results.total_credit }}</p>
+    <section class="results-container">
+        <h1 class="title">Analysis Results</h1>
 
-<p>Total Debit: ₹ {{ results.total_debit }}</p>
+        <div class="cards">
 
-<p>Highest Category:
-{{ results.highest_category }}</p>
+            <div class="card credit">
+                <h3>Total Credit</h3>
+                <p>₹ {{ results.total_credit }}</p>
+            </div>
 
-<p>Highest Amount:
-₹ {{ results.highest_amount }}</p>
+            <div class="card debit">
+                <h3>Total Debit</h3>
+                <p>₹ {{ results.total_debit }}</p>
+            </div>
 
-<img src="{{ url_for('static', filename=results.chart_file) }}">
+            <div class="card category">
+                <h3>Highest Category</h3>
+                <p>{{ results.highest_category }}</p>
+            </div>
+
+            <div class="card amount">
+                <h3>Highest Amount</h3>
+                <p>₹ {{ results.highest_amount }}</p>
+            </div>
+
+        </div>
+
+        <div class="chart-section">
+            <h2>Spending Chart</h2>
+            <img src="{{ url_for('static', filename=results.chart_file) }}">
+        </div>
+
+    </section>
 
 </body>
+
 </html>

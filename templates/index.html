@@ -1,29 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINSYY</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+</head>
+
 <body>
 
-<h1>Bank Statement Analyzer</h1>
+    <div class="background-blob blob1"></div>
+    <div class="background-blob blob2"></div>
+    <div class="container">
 
-<form action="/analyze" method="POST" enctype="multipart/form-data">
+        <header>
+            <div class="navbar">
+                <span>FINSYY</span>
+            </div>
 
-    <label>Upload Bank Statement:</label>
-    <input type="file" name="pdf" required>
+        </header>
 
-    <br><br>
+        <br>
+        <section class="hero">
+            <div class="badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                BE THE MASTER OF YOUR MONEY
+            </div>
+            <h1> Upload your <span>bank</span>statement</h1>
+            <p class="subtitle" style="margin-left:5px;">
+                Analyze and improve your relationship with money.
+            </p>
+        </section>
 
-    <label>PDF Password (if protected):</label>
-    <input
-        type="password"
-        name="pdf_password"
-        placeholder="Leave empty if not protected"
-    >
+        <form action="/analyze" method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="input-card">
+                <label class="input-label">Upload Bank Statement</label>
+                <input class="file-input" type="file" name="pdf" required>
+            </div>
 
-    <br><br>
+            <div class="input-card">
+                <label class="input-label">PDF Password (if protected):</label>
+                <input class="text-input" type="password" name="pdf_password"
+                    placeholder="Leave empty if not protected">
+            </div>
 
-    <button type="submit">
-        Analyze Statement
-    </button>
 
-</form>
+            <button class="analyze-btn" type="submit">
+                Analyze Statement
+                <span>
+                    Let's see where the money is going ->
+                </span>
+            </button>
+
+        </form>
+
+        <section class="awareness">
+            <div class="awareness-item">
+                <strong>Confused about your finances?</strong>
+                <p>Know where every ruppee goes. </p>
+            </div>
+
+            <div class="awareness-item">
+                <strong>Don't know where to start?</strong>
+                <p>This could be the perfect first step.</p>
+            </div>
+        </section>
+
+        <footer>
+            <div>
+                <i class="fa-solid fa-shield-halved"></i>
+                Your data is private. We never store your bank details.
+            </div>
+        </footer>
 </body>
+
 </html>
