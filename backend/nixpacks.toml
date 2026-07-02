@@ -1,0 +1,7 @@
+[providers]
+# Tell Nixpacks to use both Python and Java setup environments
+providers = ["python", "java"]
+
+[variables]
+# Explicitly set the Java path just in case
+PATH = "$PATH:/usr/lib/jvm/default-jvm/bin"
