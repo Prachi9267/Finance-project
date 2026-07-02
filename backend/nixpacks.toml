@@ -1,7 +1,8 @@
-[providers]
-# Tell Nixpacks to use both Python and Java setup environments
-providers = ["python", "java"]
+[phases.setup]
+nixPkgs = ["python311", "openjdk17"]
 
-[variables]
-# Explicitly set the Java path just in case
-PATH = "$PATH:/usr/lib/jvm/default-jvm/bin"
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[start]
+cmd = "python app.py"
