@@ -9,6 +9,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -25,27 +26,19 @@ def analyze():
     if file.filename == "":
         return "No file selected"
 
-    pdf_path = os.path.join(
-        UPLOAD_FOLDER,
-        file.filename
-    )
+    pdf_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
     file.save(pdf_path)
-    password = request.form.get(
-        "pdf_password",
-        ""
-    )
+    password = request.form.get("pdf_password", "")
 
     pdf_to_analyze = pdf_path
     if password:
         from pypdf import PdfReader, PdfWriter
+
         reader = PdfReader(pdf_path)
         if reader.is_encrypted:
             reader.decrypt(password)
-            unlocked_pdf = pdf_path.replace(
-                ".pdf",
-                "_unlocked.pdf"
-            )
+            unlocked_pdf = pdf_path.replace(".pdf", "_unlocked.pdf")
             writer = PdfWriter()
 
             for page in reader.pages:
@@ -57,10 +50,7 @@ def analyze():
     try:
         results = analyze_statement(pdf_to_analyze)
 
-        return render_template(
-            "results.html",
-            results=results
-        )
+        return render_template("results.html", results=results)
 
     except Exception as e:
         return f"""
@@ -70,4 +60,6 @@ def analyze():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+
+    app.run(host="0.0.0.0", port=port)
