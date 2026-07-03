@@ -1,14 +1,14 @@
-[providers]
-providers = ["python"]
-
 [phases.setup]
+# Explicitly provision both Python 3.11 and OpenJDK 17 binaries into the Nix profile
 nixPkgs = ["python311", "openjdk17"]
 
 [phases.install]
 cmds = [
-  "python -m pip install --upgrade pip",
-  "pip install -r requirements.txt"
+  "python3 -m venv /opt/venv",
+  "/opt/venv/bin/pip install --upgrade pip",
+  "/opt/venv/bin/pip install -r requirements.txt"
 ]
 
 [start]
-cmd = "python app.py"
+# Execute using the exact virtual environment path to guarantee isolation
+cmd = "/opt/venv/bin/python app.py"
