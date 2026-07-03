@@ -9,4 +9,4 @@ cmds = [
 
 [start]
 # Execute using the exact virtual environment path to guarantee isolation
-cmd = "pyhton app.py"
+cmd = "python app.py"
