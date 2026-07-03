@@ -297,11 +297,7 @@ def build_axis_transactions(
 
 
 def analyze_statement(pdf_path):
-    import shutil
-    import subprocess
 
-    print("JAVA", shutil.which("java"))
-    print(subprocess.getoutput("java -version"))
     csv_path = pdf_path.replace(".pdf", ".csv")
 
     tabula.convert_into(
