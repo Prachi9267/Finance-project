@@ -297,18 +297,32 @@ def build_axis_transactions(
 
 
 def analyze_statement(pdf_path):
+    import shutil
+    import subprocess
 
+    print("JAVA", shutil.which("java"))
+    print(subprocess.getoutput("java -version"))
     csv_path = pdf_path.replace(".pdf", ".csv")
 
     tabula.convert_into(
-        pdf_path, csv_path, output_format="csv", pages="all", stream=True
+        pdf_path,
+        csv_path,
+        output_format="csv",
+        pages="all",
+        stream=True,
+        force_subprocess=True,
     )
     df = pd.read_csv(csv_path)
     if "Particulars" in df.columns:
         print("Kotak detected -> retrying with lattice")
 
         tabula.convert_into(
-            pdf_path, csv_path, output_format="csv", pages="all", lattice=True
+            pdf_path,
+            csv_path,
+            output_format="csv",
+            pages="all",
+            lattice=True,
+            force_subprocess=True,
         )
         df = pd.read_csv(csv_path)
 

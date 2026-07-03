@@ -4,11 +4,9 @@ nixPkgs = ["python311", "openjdk17"]
 
 [phases.install]
 cmds = [
-  "python3 -m venv /opt/venv",
-  "/opt/venv/bin/pip install --upgrade pip",
-  "/opt/venv/bin/pip install -r requirements.txt"
+  "pip install -r requirements.txt"
 ]
 
 [start]
 # Execute using the exact virtual environment path to guarantee isolation
-cmd = "/opt/venv/bin/python app.py"
+cmd = "pyhton app.py"
