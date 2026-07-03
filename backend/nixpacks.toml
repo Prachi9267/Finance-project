@@ -1,8 +1,5 @@
-
 [providers]
-
-providers = ["python", "java"]
+providers = ["python"]
 
 [phases.setup]
-
 aptPkgs = ["openjdk-17-jre-headless"]
