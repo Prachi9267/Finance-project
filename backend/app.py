@@ -3,6 +3,19 @@ from analyzer import analyze_statement
 from pypdf import PdfReader
 from pypdf import PdfWriter
 import os
+import sys
+
+if not os.environ.get("JAVA_HOME"):
+    nix_java_path = "/nix/var/nix/profiles/default"
+    os.environ["JAVA_HOME"] = nix_java_path
+
+    os.environ["PATH"] = f"{nix_java_path}/bin:{os.environ.get('PATH', '')}"
+
+os.environ["LD_LIBRARY_PATH"] = (
+    "/nix/var/nix/profiles/default/lib/server:"
+    "/nix/var/nix/profiles/default/lib/openjdk/lib/server:"
+    f"{os.environ.get('LD_LIBRARY_PATH', '')}"
+)
 
 app = Flask(__name__)
 
